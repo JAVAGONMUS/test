@@ -1,7 +1,149 @@
-// scripts.js - Funcionalidad adicional con JavaScript
+/**
+ * scripts.js - Funcionalidades principales del catálogo
+ * Contempla:
+ * - Lightbox para imágenes/videos
+ * - Validación de formularios
+ * - Protección básica contra modificaciones
+ * - Soporte para videos de YouTube
+ */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Validación del formulario de búsqueda
+    // =============================================
+    // LIGHTBOX PARA IMÁGENES/VIDEOS
+    // =============================================
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `
+        <span class="close-lightbox">&times;</span>
+        <div class="lightbox-media-container"></div>
+        <button class="lightbox-nav prev">&lt;</button>
+        <button class="lightbox-nav next">&gt;</button>
+    `;
+    document.body.appendChild(lightbox);
+
+    let currentMediaIndex = 0;
+    let mediaItems = [];
+
+    function openLightbox(content, index) {
+        const container = lightbox.querySelector('.lightbox-media-container');
+        container.innerHTML = '';
+        
+        // Clonamos el elemento para evitar conflictos
+        const mediaClone = content.cloneNode(true);
+        
+        // Si es video, activamos controles y autoplay
+        if (mediaClone.tagName === 'VIDEO') {
+            mediaClone.controls = true;
+            mediaClone.autoplay = true;
+            mediaClone.className = 'lightbox-video';
+        } else if (mediaClone.tagName === 'IFRAME') {
+            // Para YouTube, ajustamos tamaño
+            mediaClone.className = 'lightbox-video';
+            mediaClone.style.width = '80%';
+            mediaClone.style.height = '80%';
+        } else {
+            mediaClone.className = 'lightbox-content';
+        }
+        
+        container.appendChild(mediaClone);
+        lightbox.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        currentMediaIndex = index;
+    }
+
+    function closeLightbox() {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        
+        // Pausar videos al cerrar
+        const videos = lightbox.querySelectorAll('video, iframe');
+        videos.forEach(video => {
+            if (video.tagName === 'VIDEO') {
+                video.pause();
+            } else if (video.tagName === 'IFRAME') {
+                // Detener videos de YouTube
+                video.src = video.src; // Esto recarga el iframe
+            }
+        });
+    }
+
+    function navigateLightbox(direction) {
+        currentMediaIndex += direction;
+        
+        if (currentMediaIndex >= mediaItems.length) currentMediaIndex = 0;
+        if (currentMediaIndex < 0) currentMediaIndex = mediaItems.length - 1;
+        
+        const mediaItem = mediaItems[currentMediaIndex];
+        const mediaElement = createMediaElement(mediaItem);
+        openLightbox(mediaElement, currentMediaIndex);
+    }
+
+    function createMediaElement(mediaItem) {
+        if (mediaItem.classList.contains('video-thumbnail')) {
+            const video = document.createElement('video');
+            video.src = mediaItem.querySelector('source').src;
+            video.controls = true;
+            return video;
+        } else if (mediaItem.tagName === 'IFRAME') {
+            const iframe = document.createElement('iframe');
+            iframe.src = mediaItem.src;
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allowfullscreen', '');
+            return iframe;
+        } else {
+            const img = document.createElement('img');
+            img.src = mediaItem.src;
+            return img;
+        }
+    }
+
+    // Eventos del lightbox
+    lightbox.querySelector('.close-lightbox').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    lightbox.querySelector('.prev').addEventListener('click', () => navigateLightbox(-1));
+    lightbox.querySelector('.next').addEventListener('click', () => navigateLightbox(1));
+
+    // Inicializar navegación con teclado
+    document.addEventListener('keydown', function(e) {
+        if (lightbox.style.display === 'block') {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        }
+    });
+
+    // Asignar eventos a elementos multimedia
+    function initMediaItems() {
+        mediaItems = Array.from(document.querySelectorAll('.img-preview, .video-thumbnail, .contenedor-multimedia iframe'));
+        
+        mediaItems.forEach((element, index) => {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+                currentMediaIndex = index;
+                
+                let mediaElement;
+                if (this.classList.contains('img-preview') {
+                    mediaElement = document.createElement('img');
+                    mediaElement.src = this.src;
+                } else if (this.classList.contains('video-thumbnail')) {
+                    mediaElement = document.createElement('video');
+                    mediaElement.src = this.querySelector('source').src;
+                    mediaElement.controls = true;
+                } else if (this.tagName === 'IFRAME') {
+                    mediaElement = this.cloneNode(true);
+                }
+                
+                openLightbox(mediaElement, index);
+            });
+        });
+    }
+
+    // =============================================
+    // VALIDACIÓN DE FORMULARIOS
+    // =============================================
     const searchForm = document.querySelector('.search-form');
     if (searchForm) {
         searchForm.addEventListener('submit', function(e) {
@@ -14,19 +156,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
-    // Protección básica contra modificaciones
-    console.log('Protección básica activada:');
-    console.log('1. Validación de formularios del lado del cliente');
-    console.log('2. Uso de consultas preparadas en PHP');
-    console.log('3. Escapado de salida con htmlspecialchars');
-    console.log('4. Validación de tipos de archivo en newpicture.php');
-    
-    // Deshabilitar clic derecho e inspección para dificultar modificaciones
+
+    // Validación para newpicture.php
+    const uploadForm = document.querySelector('form[enctype="multipart/form-data"]');
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', function(e) {
+            const fileInput = this.querySelector('input[type="file"]');
+            const youtubeInput = this.querySelector('input[name="youtube_url"]');
+            
+            if (!fileInput.files.length && !youtubeInput.value.trim()) {
+                e.preventDefault();
+                alert('Debes seleccionar un archivo o ingresar un enlace de YouTube');
+            }
+        });
+    }
+
+    // =============================================
+    // PROTECCIÓN BÁSICA Y UTILIDADES
+    // =============================================
+    // Deshabilitar clic derecho e inspección
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
     });
-    
+
     document.addEventListener('keydown', function(e) {
         // Deshabilitar F12, Ctrl+Shift+I, Ctrl+Shift+C, Ctrl+U
         if (e.key === 'F12' || 
@@ -36,153 +188,41 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
         }
     });
+
+    // Ajustar elementos según tamaño de pantalla
+    function adjustForScreenSize() {
+        const screenWidth = window.innerWidth;
+        
+        if (screenWidth < 768) {
+            // Ajustes específicos para móviles
+            document.querySelectorAll('button').forEach(button => {
+                button.style.fontSize = '14px';
+            });
+        }
+    }
+
+    // Mostrar mensajes temporales
+    function showMessage(type, message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `mensaje ${type}`;
+        messageDiv.textContent = message;
+        
+        const main = document.querySelector('main');
+        if (main) {
+            main.insertBefore(messageDiv, main.firstChild);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+    }
+
+    // =============================================
+    // INICIALIZACIÓN
+    // =============================================
+    initMediaItems();
+    adjustForScreenSize();
+    window.addEventListener('resize', adjustForScreenSize);
+
+    console.log('Scripts cargados correctamente');
 });
-
-// Función para mostrar mensajes de éxito/error
-function showMessage(type, message) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `mensaje ${type}`;
-    messageDiv.textContent = message;
-    
-    const main = document.querySelector('main');
-    if (main) {
-        main.insertBefore(messageDiv, main.firstChild);
-        
-        // Eliminar el mensaje después de 5 segundos
-        setTimeout(() => {
-            messageDiv.remove();
-        }, 5000);
-    }
-}
-
-// Lightbox para imágenes y videos
-document.addEventListener('DOMContentLoaded', function() {
-    // Crear elementos del lightbox
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = `
-        <span class="close-lightbox">&times;</span>
-        <div class="lightbox-media-container"></div>
-    `;
-    document.body.appendChild(lightbox);
-    
-    // Funcionalidad del lightbox
-    function openLightbox(content) {
-        const container = lightbox.querySelector('.lightbox-media-container');
-        container.innerHTML = '';
-        container.appendChild(content);
-        lightbox.style.display = 'block';
-        document.body.style.overflow = 'hidden'; // Evitar scroll
-    }
-
-        
-    let currentMediaIndex = 0;
-    let mediaItems = [];
-
-    function initLightboxNavigation() {
-        mediaItems = Array.from(document.querySelectorAll('.img-preview, .video-thumbnail'));
-        
-        document.addEventListener('keydown', function(e) {
-            if (lightbox.style.display !== 'block') return;
-            
-            if (e.key === 'ArrowLeft') {
-                navigateLightbox(-1); // Anterior
-            } else if (e.key === 'ArrowRight') {
-                navigateLightbox(1); // Siguiente
-            }
-        });
-        
-        // Agregar botones de navegación
-        const navHTML = `
-            <button class="lightbox-nav prev">&lt;</button>
-            <button class="lightbox-nav next">&gt;</button>
-        `;
-        lightbox.querySelector('.lightbox-media-container').insertAdjacentHTML('beforeend', navHTML);
-        
-        lightbox.querySelector('.prev').addEventListener('click', () => navigateLightbox(-1));
-        lightbox.querySelector('.next').addEventListener('click', () => navigateLightbox(1));
-    }
-
-    function navigateLightbox(direction) {
-        currentMediaIndex += direction;
-        
-        // Circular navigation
-        if (currentMediaIndex >= mediaItems.length) currentMediaIndex = 0;
-        if (currentMediaIndex < 0) currentMediaIndex = mediaItems.length - 1;
-        
-        const mediaItem = mediaItems[currentMediaIndex];
-        const isVideo = mediaItem.classList.contains('video-thumbnail');
-        const mediaElement = isVideo 
-            ? document.createElement('video') 
-            : document.createElement('img');
-        
-        mediaElement.src = mediaItem.src || mediaItem.querySelector('source').src;
-        mediaElement.controls = isVideo;
-        mediaElement.className = isVideo ? 'lightbox-video' : 'lightbox-content';
-        mediaElement.autoplay = isVideo;
-        
-        openLightbox(mediaElement);
-    }
-    
-    function closeLightbox() {
-        lightbox.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-    
-    // Eventos
-    lightbox.querySelector('.close-lightbox').addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox) closeLightbox();
-    });
-    
-    // Escapar con tecla ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeLightbox();
-    });
-    
-    // Asignar eventos a todas las miniaturas
-    document.querySelectorAll('.img-preview, .video-thumbnail').forEach((element, index) => {
-        element.addEventListener('click', function(e) {
-        e.preventDefault();
-        currentMediaIndex = index;
-            
-            const isVideo = this.classList.contains('video-thumbnail');
-            const mediaElement = isVideo 
-                ? document.createElement('video') 
-                : document.createElement('img');
-                
-            mediaElement.src = this.src || this.querySelector('source').src;
-            mediaElement.controls = isVideo;
-            mediaElement.className = isVideo ? 'lightbox-video' : 'lightbox-content';
-            mediaElement.autoplay = isVideo;
-            
-            openLightbox(mediaElement);
-        });
-    });
-
-    // Inicializar al cargar
-    initLightboxNavigation();
-
-});
-
-// Ajustar elementos según el tamaño de pantalla
-function adjustForScreenSize() {
-    const screenWidth = window.innerWidth;
-    
-    // Ejemplo: Cambiar comportamiento de botones en móviles
-    if (screenWidth < 768) {
-        // Ajustes específicos para móviles
-        document.querySelectorAll('button').forEach(button => {
-            button.style.fontSize = '14px';
-        });
-    } else {
-        // Restaurar estilos para desktop
-        document.querySelectorAll('button').forEach(button => {
-            button.style.fontSize = '';
-        });
-    }
-}
-
-// Ejecutar al cargar y al cambiar tamaño de pantalla
-window.addEventListener('load', adjustForScreenSize);
-window.addEventListener('resize', adjustForScreenSize);
