@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $contenido = file_get_contents($temp_path);
                 $sql = "INSERT INTO FOTOS (NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
-                        VALUES (?, ?, ?, '-', CURDATE(), CURTIME(), '10')";
+                        VALUES (?, ?, ?, '-', CURDATE(), CURTIME(), '0')";
                 executeQuery($sql, [$nombre, $contenido, $tipo_mime]);
                 $mensaje = "✅ Archivo subido correctamente! ID: " . getLastInsertId();
             } catch (Exception $e) {
