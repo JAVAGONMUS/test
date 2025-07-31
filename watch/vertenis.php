@@ -27,7 +27,7 @@ $imagenes = getImagesByIds($ids_fotos);
 
 // Función para determinar el tipo de contenido
 function obtenerTipoContenido($imagen) {
-    if (!empty($imagen['URL_VIDEO']) && $imagen['URL_VIDEO'] !== '-') {
+    if ($imagen['URL_VIDEO'] !== '-') {
         return 'youtube';
     } elseif (strpos($imagen['TIPO_MIME'], 'image/') === 0) {
         return 'imagen';
@@ -36,6 +36,14 @@ function obtenerTipoContenido($imagen) {
     }
     return 'desconocido';
 }
+
+function obtenerIdYoutube($url) {
+    // Extrae el ID del video desde distintas variantes de URL
+    $patron = '%(?:youtube\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
+    preg_match($patron, $url, $coincidencias);
+    return $coincidencias[1] ?? false;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -69,18 +77,18 @@ function obtenerTipoContenido($imagen) {
                     <?php $tipo = obtenerTipoContenido($imagen); ?>
                     
                     <div class="contenedor-multimedia">
-                        <?php if ($tipo === 'youtube'): ?>
-                            <!-- Video de YouTube -->
-                            <div class="video-container">
-                                <iframe src="<?php echo htmlspecialchars($imagen['URL_VIDEO']); ?>?rel=0&modestbranding=1" 
-                                        frameborder="0" 
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen
-                                        title="Video de YouTube: <?php echo htmlspecialchars($imagen['NOMBRE']); ?>">
-                                </iframe>
-                            </div>
-                            <p class="leyenda">Video: <?php echo htmlspecialchars($imagen['NOMBRE']); ?></p>
-                            
+                        <?php if ($tipo === 'youtube'): 
+
+                            if (!empty($imagen['URL_VIDEO'])) {
+                                $videoID = obtenerIdYoutube($imagen['URL_VIDEO']);
+                                if ($videoID) {
+                                    echo '<div class="contenedor-multimedia">';
+                                    echo '<iframe width="300" height="200" src="https://www.youtube.com/embed/' . htmlspecialchars($videoID) . '" frameborder="0" allowfullscreen></iframe>';
+                                    echo '</div>';
+                                }
+                            }
+
+                        ?>    
                         <?php elseif ($tipo === 'imagen'): ?>
                             <!-- Imagen normal -->
                             <img src="data:<?php echo $imagen['TIPO_MIME']; ?>;base64,<?php echo base64_encode($imagen['FOTO']); ?>" 
