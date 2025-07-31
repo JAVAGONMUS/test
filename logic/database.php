@@ -1,12 +1,11 @@
 <?php
 // database.php - Archivo único de conexión a la base de datos
 
-// Configuración de la base de datos
-define('DB_HOST', getenv('MYSQLHOST') ?: 'turntable.proxy.rlwy.net:47866');
-define('DB_USER', getenv('MYSQLUSER') ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'JRVMHEVvCjiiYNJetQIWQQIelcrMBTcm');
-define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
-
+// Configuración de la base de datos para PHPMYADMIN
+define('DB_HOST', 'localhost');
+define('DB_USER', 'admin');
+define('DB_PASS', '');
+define('DB_NAME', 'sysmussa');
 
 // Función para obtener conexión a la base de datos
 function getDBConnection() {
@@ -125,11 +124,10 @@ function getProductoById($id) {
 }
 
 // Función para insertar una nueva imagen
-function insertarImagen($nombre, $foto, $tipo_mime, $user_new_data) {
-    $sql = "INSERT INTO FOTOS (NOMBRE, FOTO, TIPO_MIME, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
-            VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)";
-    
-    return executeQuery($sql, [$nombre, $foto, $tipo_mime, $user_new_data]);
+function insertarImagen($nombre, $contenido, $tipo_mime, $url_video = null, $user_new_data) {
+    $sql = "INSERT INTO FOTOS (NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
+            VALUES (?, ?, ?, ?, CURDATE(), CURTIME(), ?)";
+    return executeQuery($sql, [$nombre, $contenido, $tipo_mime, $url_video, $user_new_data]);
 }
 
 // Función para obtener el próximo ID de FOTOS
