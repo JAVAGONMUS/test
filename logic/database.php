@@ -124,7 +124,7 @@ function getProductoById($id) {
 }
 
 // Función para insertar una nueva imagen
-function insertarImagen($nombre, $contenido, $tipo_mime, $url_video = null, $user_new_data) {
+function insertarImagen($nombre, $contenido, $tipo_mime, $url_video, $user_new_data) {
     $sql = "INSERT INTO FOTOS (NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
             VALUES (?, ?, ?, ?, CURDATE(), CURTIME(), ?)";
     return executeQuery($sql, [$nombre, $contenido, $tipo_mime, $url_video, $user_new_data]);
