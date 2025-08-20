@@ -25,7 +25,7 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
 <body>
     <header>
         <h1 class="TituloS1">GUATE MOSS S.A.</h1>
-		<h3 class="SubtituloS1">AQUI CONSENTIMOS A TODOS NUESTROS CLIENTES</h3>
+		<h3 class="SubtituloS1">TRATAMOS LA MANERA DE CONSENTIR A NUESTROS CLIENTES</h3>
     </header>
     
     <nav>
@@ -51,7 +51,7 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
     </main>
     
     <footer>
-        <p>&copy; <?php echo date('Y'); ?> Catálogo de Calzado. Todos los derechos reservados.</p>
+        <p>&copy; <?php echo date('Y'); ?> Catálogo de GAUTE MOSS S.A. Todos los derechos reservados.</p>
     </footer>
     
     <script src="logic/codexone.js"></script>
