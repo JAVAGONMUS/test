@@ -38,7 +38,7 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
         <form action="watch/disponibles.php" method="get" class="search-form">
             <div class="form-group">
                 <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" placeholder="Ej. Nike, Adidas...">
+                <input type="text" id="marca" name="marca" placeholder="Ej. disney, tomy...">
             </div>
             
             <div class="form-group">
