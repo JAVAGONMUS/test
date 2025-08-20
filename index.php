@@ -24,8 +24,8 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
 </head>
 <body>
     <header>
-        <h1 class="TituloS1">PUCHICA QUE PRECIOS S.A.</h1>
-		<h3 class="SubtituloS1">TUS SNEAKERS FAVORITOS EN UN SOLO LUGAR</h3>
+        <h1 class="TituloS1">GUATE MOSS S.A.</h1>
+		<h3 class="SubtituloS1">AQUI CONSENTIMOS A TODOS NUESTROS CLIENTES</h3>
     </header>
     
     <nav>
