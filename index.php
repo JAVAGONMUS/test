@@ -24,12 +24,12 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
 </head>
 <body>
     <header>
-        <h1 class="TituloS1">GUATE MOSS S.A.</h1>
-		<h3 class="SubtituloS1">TRATAMOS LA MANERA DE CONSENTIR A NUESTROS CLIENTES</h3>
+        <h1 class="TituloS1">PUCHICA QUE PRECIOS S.A.</h1>
+		<h3 class="SubtituloS1">TUS SNEAKERS FAVORITOS EN UN SOLO LUGAR</h3>
     </header>
     
     <nav>
-        <button onclick="window.open('https://www.facebook.com/profile.php?id=100093685280633', '_blank')">PAGINA EN FACEBOOK</button>
+        <button onclick="window.open('https://www.facebook.com/share/1GrRjVk5LE/', '_blank')">PAGINA EN FACEBOOK</button>
         <button onclick="window.location.href='watch/existencias.php'">CATALOGO GENERAL</button>
         <button onclick="window.open('watch/newpicture.php', '_blank')">AGREGAR</button>
     </nav>
@@ -38,7 +38,7 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
         <form action="watch/disponibles.php" method="get" class="search-form">
             <div class="form-group">
                 <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" placeholder="Ej. disney, tomy...">
+                <input type="text" id="marca" name="marca" placeholder="Ej. Nike, Adidas...">
             </div>
             
             <div class="form-group">
@@ -51,7 +51,7 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
     </main>
     
     <footer>
-        <p>&copy; <?php echo date('Y'); ?> Catálogo de GAUTE MOSS S.A. Todos los derechos reservados.</p>
+        <p>&copy; <?php echo date('Y'); ?> Catálogo de Calzado. Todos los derechos reservados.</p>
     </footer>
     
     <script src="logic/codexone.js"></script>
