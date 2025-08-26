@@ -8,6 +8,127 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    
+
+
+
+    console.log("codexone fullscreen listo ✅");
+    // ---- Utilidades Fullscreen ----
+    function requestFS(el) {
+        const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+        if (fn) return fn.call(el);
+        return Promise.reject(new Error("Fullscreen API no disponible"));
+    }
+
+    // ---- Click para IMG y VIDEO (evento delegado, sirve para contenido dinámico) ----
+    document.addEventListener(
+        "click",
+        function (e) {
+        const target = e.target;
+        if (!target) return;
+
+        // Si clican una IMG o un VIDEO → fullscreen al elemento
+        if (target.matches("img, video")) {
+            target.style.cursor = "zoom-in";
+            requestFS(target).catch(() => {
+            // Si algún navegador viejito falla, no hacemos nada extra aquí.
+            // (Opcional: podrías abrir un "lightbox" como fallback)
+            });
+        }
+        },
+        { passive: true }
+    );
+
+    // ---- IFRAmes (YouTube/Vimeo): botón overlay ⛶ para pedir fullscreen ----
+    // Por diseño del navegador, el "click" dentro del iframe NO llega a tu JS,
+    // así que creamos un botón encima.
+    function prepareIframes(root = document) {
+        const iframes = root.querySelectorAll("iframe:not([data-fs-ready])");
+        iframes.forEach((frame) => {
+        frame.setAttribute("data-fs-ready", "1");
+
+        // Permitir fullscreen en el iframe (necesario para YouTube/Vimeo)
+        if (!frame.hasAttribute("allowfullscreen")) frame.setAttribute("allowfullscreen", "");
+        const allow = frame.getAttribute("allow") || "";
+        if (!/fullscreen/i.test(allow)) frame.setAttribute("allow", (allow + "; fullscreen").trim());
+
+        // Envolver con un contenedor para posicionar el botón
+        if (!frame.parentElement) return;
+        if (frame.parentElement.classList.contains("fs-wrap")) return;
+
+        const wrap = document.createElement("div");
+        wrap.className = "fs-wrap";
+        wrap.style.position = "relative";
+        wrap.style.display = "inline-block";
+        wrap.style.maxWidth = "100%";
+
+        frame.parentElement.insertBefore(wrap, frame);
+        wrap.appendChild(frame);
+
+        // Botón overlay ⛶
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "fs-btn";
+        btn.setAttribute("aria-label", "Pantalla completa");
+        Object.assign(btn.style, {
+            position: "absolute",
+            right: "8px",
+            top: "8px",
+            zIndex: "5",
+            padding: "6px 10px",
+            border: "0",
+            borderRadius: "12px",
+            cursor: "pointer",
+            boxShadow: "0 2px 8px rgba(0,0,0,.25)",
+            background: "rgba(0,0,0,.65)",
+            color: "#fff",
+            fontSize: "16px",
+            lineHeight: "1",
+        });
+        btn.textContent = "⛶";
+
+        btn.addEventListener("click", function (ev) {
+            ev.stopPropagation();
+            // Pedimos fullscreen sobre el IFRAME
+            requestFS(frame).catch((err) => {
+            console.warn("No se pudo entrar a fullscreen en iframe:", err);
+            });
+        });
+
+        wrap.appendChild(btn);
+        });
+    }
+
+    // Preparar iframes existentes al cargar
+    document.addEventListener("DOMContentLoaded", function () {
+        prepareIframes(document);
+    });
+
+    // Si tu página inserta iframes después (AJAX/templating), los detectamos también
+    const mo = new MutationObserver((mutations) => {
+        mutations.forEach((m) => {
+        m.addedNodes.forEach((node) => {
+            if (!(node instanceof Element)) return;
+            // Si se insertó un iframe o un contenedor con iframes dentro, prepararlos
+            if (node.matches?.("iframe")) {
+            prepareIframes(document);
+            } else if (node.querySelector?.("iframe")) {
+            prepareIframes(node);
+            }
+        });
+        });
+    });
+    mo.observe(document.documentElement, { childList: true, subtree: true });
+
+
+
+
+
+
+
+
+
     // =============================================
     // LIGHTBOX PARA IMÁGENES/VIDEOS
     // =============================================
@@ -115,31 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Asignar eventos a elementos multimedia
-    function initMediaItems() {
-        mediaItems = Array.from(document.querySelectorAll('.img-preview, .video-thumbnail, .contenedor-multimedia iframe'));
-        
-        mediaItems.forEach((element, index) => {
-            element.addEventListener('click', function(e) {
-                e.preventDefault();
-                currentMediaIndex = index;
-                
-                let mediaElement;
-                if (this.classList.contains('img-preview') {
-                    mediaElement = document.createElement('img');
-                    mediaElement.src = this.src;
-                } else if (this.classList.contains('video-thumbnail')) {
-                    mediaElement = document.createElement('video');
-                    mediaElement.src = this.querySelector('source').src;
-                    mediaElement.controls = true;
-                } else if (this.tagName === 'IFRAME') {
-                    mediaElement = this.cloneNode(true);
-                }
-                
-                openLightbox(mediaElement, index);
-            });
-        });
-    }
+    
 
     // =============================================
     // VALIDACIÓN DE FORMULARIOS
@@ -220,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // =============================================
     // INICIALIZACIÓN
     // =============================================
-    initMediaItems();
+    
     adjustForScreenSize();
     window.addEventListener('resize', adjustForScreenSize);
 
