@@ -429,3 +429,11 @@ button, [role="button"] {
         border-color: #3498db;
     }
 }
+
+tr {
+    cursor: pointer;
+}
+tr:hover {
+    background-color: #f2f2f2; /* color de fondo al pasar el mouse */
+}
+
