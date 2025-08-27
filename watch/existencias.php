@@ -79,7 +79,7 @@ $productos = getAllProductos();
                     <td><?php echo htmlspecialchars($producto['TALLA_EUR']); ?></td>
                     <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>
                     <td>
-                        <button onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_PROD']; ?>'">
+                        <button onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
                             VER PRODUCTO
                         </button>
                     </td>
