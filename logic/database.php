@@ -117,7 +117,7 @@ function getProductoById($id) {
             JOIN DIVISION d ON m.ID_DIV = d.ID_DIV
             JOIN DEPARTAMENTO dep ON m.ID_DEP = dep.ID_DEP
             JOIN CATEGORIA cat ON m.ID_CAT = cat.ID_CAT
-            WHERE c.ID_PROD = ?";
+            WHERE c.ID_CATT = ?";
     
     $result = executeQuery($sql, [$id]);
     return $result[0] ?? null;
