@@ -116,11 +116,12 @@ function obtenerIdYoutube($url) {
             <h2>Información Técnica</h2>
             
             <div class="info-grid">
+                                
                 <div class="info-item">
-                    <span class="info-label">📋 Código UPC:</span>
-                    <span class="info-value"><?php echo htmlspecialchars($producto['UPC']); ?></span>
+                    <span class="info-label">🏷️ Marca:</span>
+                    <span class="info-value"><?php echo htmlspecialchars($producto['CATEGORIA']); ?></span>
                 </div>
-                
+
                 <div class="info-item">
                     <span class="info-label">🏷️ Modelo:</span>
                     <span class="info-value"><?php echo htmlspecialchars($producto['MODELO']); ?></span>
@@ -129,12 +130,7 @@ function obtenerIdYoutube($url) {
                 <div class="info-item">
                     <span class="info-label">🎨 Color:</span>
                     <span class="info-value"><?php echo htmlspecialchars($producto['COLOR']); ?></span>
-                </div>
-                
-                <div class="info-item">
-                    <span class="info-label">📦 Departamento:</span>
-                    <span class="info-value"><?php echo htmlspecialchars($producto['DEPARTAMENTO']); ?></span>
-                </div>
+                </div>                           
                 
                 <div class="info-item">
                     <span class="info-label">👟 Talla US:</span>
@@ -155,6 +151,16 @@ function obtenerIdYoutube($url) {
                     <span class="info-label">💰 Precio:</span>
                     <span class="info-value precio">$<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></span>
                 </div>
+
+                <div class="info-item">
+                    <span class="info-label">📋 Código:</span>
+                    <span class="info-value"><?php echo htmlspecialchars($producto['UPC']); ?></span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">📦 Categoria:</span>
+                    <span class="info-value"><?php echo htmlspecialchars($producto['DEPARTAMENTO']); ?></span>
+                </div>  
                 
                 <div class="info-item full-width">
                     <span class="info-label">🔄 Estado:</span>
