@@ -52,12 +52,11 @@ $productos = getProductosFiltrados($marca, $talla);
                         <th>PRECIO</th>                        
                         <th>TALLA USS</th>
                         <th>TALLA CM</th>
-                        <th>INFORMACION</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($productos as $producto): ?>
-                    <tr>
+                    <tr onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
                         <td>
                             <?php 
                                 $imagenes = getImagesByIds([$producto['ID_FOT']]);
@@ -78,12 +77,7 @@ $productos = getProductosFiltrados($marca, $talla);
                         <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>
                         <td>$<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
                         <td><?php echo htmlspecialchars($producto['TALLA_USS']); ?></td>
-                        <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>
-                        <td>
-                            <button onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
-                                VER PRODUCTO
-                            </button>
-                        </td>
+                        <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>          
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
