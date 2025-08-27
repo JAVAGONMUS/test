@@ -36,12 +36,11 @@ $productos = getAllProductos();
                     <th>MARCA</th>
                     <th>PRECIO</th>
                     <th>DISPONIBILIDAD</th>
-                    <th>INFORMACION</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($productos as $producto): ?>
-                <tr>
+                <tr onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
                     <td>
                         <?php 
                             $imagenes = getImagesByIds([$producto['ID_FOT']]);
@@ -61,12 +60,7 @@ $productos = getAllProductos();
                     </td>
                     <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>    
                     <td>$<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
-                    <td><?php echo $producto['VENDIDO'] ? 'VENDIDO' : 'DISPONIBLE'; ?></td>
-                    <td>
-                        <button onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
-                            VER PRODUCTO
-                        </button>
-                    </td>
+                    <td><?php echo $producto['VENDIDO'] ? 'VENDIDO' : 'DISPONIBLE'; ?></td>                  
                 </tr>
                 <?php endforeach; ?>
             </tbody>
