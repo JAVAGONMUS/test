@@ -33,17 +33,9 @@ $productos = getAllProductos();
             <thead>
                 <tr>
                     <th>IMAGEN</th>
-                    <th>UPC</th>
+                    <th>MARCA</th>
                     <th>PRECIO</th>
                     <th>DISPONIBILIDAD</th>
-                    <th>ESTADO</th>
-                    <th>PRODUCTO</th>
-                    <th>CATEGORIA</th>
-                    <th>MARCA</th>
-                    <th>MODELO</th>
-                    <th>TALLA USS</th>
-                    <th>TALLA EUR</th>
-                    <th>TALLA CM</th>
                     <th>INFORMACION</th>
                 </tr>
             </thead>
@@ -67,17 +59,9 @@ $productos = getAllProductos();
                             }
                         ?>
                     </td>
-                    <td><?php echo htmlspecialchars($producto['UPC']); ?></td>
+                    <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>    
                     <td>$<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
                     <td><?php echo $producto['VENDIDO'] ? 'VENDIDO' : 'DISPONIBLE'; ?></td>
-                    <td><?php echo htmlspecialchars($producto['ESTADO']); ?></td>
-                    <td><?php echo htmlspecialchars($producto['DIVISION']); ?></td>
-                    <td><?php echo htmlspecialchars($producto['DEPARTAMENTO']); ?></td>
-                    <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>
-                    <td><?php echo htmlspecialchars($producto['MODELO']); ?></td>
-                    <td><?php echo htmlspecialchars($producto['TALLA_USS']); ?></td>
-                    <td><?php echo htmlspecialchars($producto['TALLA_EUR']); ?></td>
-                    <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>
                     <td>
                         <button onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
                             VER PRODUCTO
