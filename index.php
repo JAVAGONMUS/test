@@ -29,6 +29,7 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
     </header>
     
     <nav>
+		<button id="btnWhatsApp">💬 ESCRIBENOS</button>
         <button onclick="window.open('https://www.facebook.com/share/1GrRjVk5LE/', '_blank')">PAGINA EN FACEBOOK</button>
         <button onclick="window.location.href='watch/existencias.php'">CATALOGO GENERAL</button>
     </nav>
