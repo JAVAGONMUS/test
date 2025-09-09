@@ -75,7 +75,7 @@ $productos = getProductosFiltrados($marca, $talla);
                             ?>
                         </td>
                         <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>
-                        <td>$<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
+                        <td>Q<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
                         <td><?php echo htmlspecialchars($producto['TALLA_USS']); ?></td>
                         <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>          
                     </tr>
