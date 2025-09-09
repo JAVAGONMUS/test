@@ -438,18 +438,4 @@ tr:hover {
 }
 
 
-#btnWhatsApp {
-  background-color: #3498db; /* verde WhatsApp */
-  color: white;
-  font-size: 18px;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
 
-#btnWhatsApp:hover {
-  background-color: #20b954;
-  transform: scale(1.05);
-}
