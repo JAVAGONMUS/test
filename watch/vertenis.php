@@ -149,7 +149,7 @@ function obtenerIdYoutube($url) {
                 
                 <div class="info-item destacado">
                     <span class="info-label">💰 Precio:</span>
-                    <span class="info-value precio">$<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></span>
+                    <span class="info-value precio">Q<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></span>
                 </div>
 
                 <div class="info-item">
@@ -165,7 +165,7 @@ function obtenerIdYoutube($url) {
                 <div class="info-item full-width">
                     <span class="info-label">🔄 Estado:</span>
                     <span class="info-value <?php echo $producto['VENDIDO'] ? 'vendido' : 'disponible'; ?>">
-                        <?php echo $producto['VENDIDO'] ? '❌ Agotado' : '✅ Disponible'; ?>
+                        <?php echo $producto['VENDIDO'] ? '❌ Vendido' : '✅ Disponible'; ?>
                     </span>
                 </div>
                 
