@@ -9,17 +9,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    document.getElementById("btnWhatsApp").addEventListener("click", function() {
-        // Número de WhatsApp en formato internacional
-        let telefono = "50230131205"; // cambia por el de tu empresa
-        let mensaje = "Hola, visité su página y deseo más información de sus productos.";
+    
 
-        // Crear URL universal de WhatsApp
-        let url = "https://wa.me/" + telefono + "?text=" + encodeURIComponent(mensaje);
-
-        // Abrir en la misma pestaña
-        window.open(url, "_blank");
-    });
 
 
 
@@ -335,6 +326,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    
+    
+
     // =============================================
     // INICIALIZACIÓN
     // =============================================
@@ -343,4 +337,19 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', adjustForScreenSize);
 
     console.log('Scripts cargados correctamente');
+
+    
+
+});
+
+document.getElementById("btnWhatsApp").addEventListener("click", function() {
+        // Número de WhatsApp en formato internacional
+        let telefono = "50230131205"; // cambia por el de tu empresa
+        let mensaje = "Hola, visité su página y deseo más información de sus productos.";
+
+        // Crear URL universal de WhatsApp
+        let url = "https://wa.me/" + telefono + "?text=" + encodeURIComponent(mensaje);
+
+        // Abrir en la misma pestaña
+        window.open(url, "_blank");
 });
