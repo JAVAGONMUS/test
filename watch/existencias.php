@@ -59,7 +59,7 @@ $productos = getAllProductos();
                         ?>
                     </td>
                     <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>    
-                    <td>$<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
+                    <td>Q<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
                     <td><?php echo $producto['VENDIDO'] ? 'VENDIDO' : 'DISPONIBLE'; ?></td>                  
                 </tr>
                 <?php endforeach; ?>
