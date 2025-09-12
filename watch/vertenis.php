@@ -7,6 +7,8 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
     die("Acceso denegado.");
 }
 
+$EMPR = "1";
+
 // Validación de seguridad
 if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
     header("HTTP/1.1 400 Solicitud incorrecta");
@@ -15,7 +17,6 @@ if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
 
 $id = intval($_GET['id']);
 $producto = getProductoById($id);
-
 if (!$producto) {
     header("HTTP/1.1 404 No encontrado");
     die("Producto no encontrado");
@@ -24,7 +25,6 @@ if (!$producto) {
 // Obtener multimedia relacionado
 $ids_fotos = explode(',', $producto['ID_FOTT']);
 $imagenes = getImagesByIds($ids_fotos);
-
 // Función para determinar el tipo de contenido
 function obtenerTipoContenido($imagen) {
     if ($imagen['URL_VIDEO'] !== '-') {
@@ -57,6 +57,7 @@ function obtenerIdYoutube($url) {
     <link rel="stylesheet" href="../sketch/stylesone.css">
     <meta name="description" content="Detalles del producto <?php echo htmlspecialchars($producto['MODELO']); ?>">
 </head>
+
 <body>
     <header>
         <h1><?php echo htmlspecialchars($producto['MODELO']); ?></h1>
@@ -119,7 +120,7 @@ function obtenerIdYoutube($url) {
                                 
                 <div class="info-item">
                     <span class="info-label">🏷️ Marca:</span>
-                    <span class="info-value"><?php echo htmlspecialchars($producto['CATEGORIA']); ?></span>
+                    <span class="info-value"><?php echo htmlspecialchars($producto['CATEGORIA']); ?></span><br>
                 </div>
 
                 <div class="info-item">
@@ -163,9 +164,9 @@ function obtenerIdYoutube($url) {
                 </div>  
                 
                 <div class="info-item full-width">
-                    <span class="info-label">🔄 Estado:</span>
+                    <span class="info-label">🔄 --- </span>
                     <span class="info-value <?php echo $producto['VENDIDO'] ? 'vendido' : 'disponible'; ?>">
-                        <?php echo $producto['VENDIDO'] ? '❌ Vendido' : '✅ Disponible'; ?>
+                        <?php echo $producto['VENDIDO'] ? '❌ VENDIDO' : '✅ DISPONIBLE'; ?>
                     </span>
                 </div>
                 
