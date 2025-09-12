@@ -7,6 +7,8 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
     die("Acceso denegado.");
 }
 
+$EMPR = "1";
+
 // Configuración para archivos grandes
 ini_set('upload_max_filesize', '50M');
 ini_set('post_max_size', '50M');
@@ -28,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $url_embed = $youtube_url;
                     $youtube_url = 'YOUTUBE.COM';
                     try {
-                        $sql = "INSERT INTO FOTOS (NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
-                                VALUES (?, NULL, 'video/webm', ?, CURDATE(), CURTIME(), '0')";
-                        executeQuery($sql, [$youtube_url, $url_embed]);
+                        $sql = "INSERT INTO FOTOS (ID_EMPR, NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
+                                VALUES (?, ?, NULL, 'video/webm', ?, CURDATE(), CURTIME(), '0')";
+                        executeQuery($sql, [$EMPR, $youtube_url, $url_embed]);
                         $mensaje = "✅ Enlace de YouTube guardado correctamente!";
                     } catch (Exception $e) {
                         $error = "❌ Error al guardar en BD: " . $e->getMessage();
@@ -59,9 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (in_array($tipo_mime, $tipos_permitidos)) {
             try {
                 $contenido = file_get_contents($temp_path);
-                $sql = "INSERT INTO FOTOS (NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
-                        VALUES (?, ?, ?, '-', CURDATE(), CURTIME(), '0')";
-                executeQuery($sql, [$nombre, $contenido, $tipo_mime]);
+                $sql = "INSERT INTO FOTOS (ID_EMPR, NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
+                        VALUES (?, ?, ?, ?, '-', CURDATE(), CURTIME(), '0')";
+                executeQuery($sql, [$EMPR, $nombre, $contenido, $tipo_mime]);
                 $mensaje = "✅ Archivo subido correctamente! ID: " . getLastInsertId();
             } catch (Exception $e) {
                 $error = "❌ Error al subir archivo: " . $e->getMessage();
@@ -161,7 +163,7 @@ function getLastInsertId() {
             <div class="form-group">
                 <label for="imagen">Subir archivo (imagen o video):</label>
                 <input type="file" id="imagen" name="imagen" accept="image/*,video/*">
-                <small>Formatos aceptados: JPG, PNG, GIF, MP4, WEBM (Máx. 50MB)</small>
+                <small>Formatos aceptados: JPG, PNG, GIF, MP4, WEBM (Máx. 25MB)</small>
             </div>
             
             <div class="separador">O</div>
