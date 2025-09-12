@@ -9,7 +9,8 @@ if ($archivo_actual == basename($_SERVER["SCRIPT_FILENAME"]) && $archivo_actual 
 
 $marca = $_GET['marca'] ?? null;
 $talla = $_GET['talla'] ?? null;
-
+$EMPR = "1";
+$existenciasP = false;
 $productos = getProductosFiltrados($marca, $talla);
 ?>
 <!DOCTYPE html>
@@ -22,6 +23,7 @@ $productos = getProductosFiltrados($marca, $talla);
     <title>BUSQUEDA</title>
     <link rel="stylesheet" href="../sketch/stylesone.css">
 </head>
+
 <body>
     <header>
         <h1>CALZADO SOLICITADO DISPONIBLE</h1>
@@ -45,46 +47,83 @@ $productos = getProductosFiltrados($marca, $talla);
             <p class="no-resultados">No se encontraron productos con los datos solicitados.</p>
         <?php else: ?>
             <table class="tabla-disponibles">
-                <thead>
-                    <tr>
-                        <th>IMAGEN</th>
-                        <th>MARCA</th>
-                        <th>PRECIO</th>                        
-                        <th>TALLA USS</th>
-                        <th>TALLA CM</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($productos as $producto): ?>
-                    <tr onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
-                        <td>
-                            <?php 
-                                $imagenes = getImagesByIds([$producto['ID_FOT']]);
-                                if (!empty($imagenes)) {
-                                    $imagen = $imagenes[0];
-                                    $src = 'data:' . $imagen['TIPO_MIME'] . ';base64,' . base64_encode($imagen['FOTO']);
-                                    
-                                    if (strpos($imagen['TIPO_MIME'], 'video/') === 0) {
-                                        echo '<video class="video-thumbnail responsive-media" width="80" height="80" muted loop>';
-                                        echo '<source src="' . $src . '" type="' . $imagen['TIPO_MIME'] . '">';
-                                        echo '</video>';
-                                    } else {
-                                        echo '<img src="' . $src . '" alt="' . htmlspecialchars($producto['MODELO']) . '"  class="img-preview responsive-media">';
-                                    }
-                                }
-                            ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>
-                        <td>Q<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
-                        <td><?php echo htmlspecialchars($producto['TALLA_USS']); ?></td>
-                        <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>          
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                <?php 
+                    foreach ($productos as $producto): 
+                        if ($producto['ID_EMRP_DIV'] == $EMPR) {
+                            if (!$existenciasP) {?>
+                                <thead>
+                                    <tr>
+                                        <th>IMAGEN</th>
+                                        <th>MARCA</th>
+                                        <th>PRECIO</th>                        
+                                        <th>TALLA USS</th>
+                                        <th>TALLA CM</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
+                                        <td>
+                                            <?php 
+                                                $imagenes = getImagesByIds([$producto['ID_FOT']]);
+                                                if (!empty($imagenes)) {
+                                                    $imagen = $imagenes[0];
+                                                    $src = 'data:' . $imagen['TIPO_MIME'] . ';base64,' . base64_encode($imagen['FOTO']);
+                                                    
+                                                    if (strpos($imagen['TIPO_MIME'], 'video/') === 0) {
+                                                        echo '<video class="video-thumbnail responsive-media" width="80" height="80" muted loop>';
+                                                        echo '<source src="' . $src . '" type="' . $imagen['TIPO_MIME'] . '">';
+                                                        echo '</video>';
+                                                    } else {
+                                                        echo '<img src="' . $src . '" alt="' . htmlspecialchars($producto['MODELO']) . '"  class="img-preview responsive-media">';
+                                                    }
+                                                }
+                                            ?>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>
+                                        <td>Q<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
+                                        <td><?php echo htmlspecialchars($producto['TALLA_USS']); ?></td>
+                                        <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>                                        
+                                    </tr>
+                                </tbody><?php 
+                                $existenciasP = true; 
+                            }else{?>
+                                <tbody>
+                                    <tr onclick="window.location.href='vertenis.php?id=<?php echo $producto['ID_CATT']; ?>'">
+                                        <td>
+                                            <?php 
+                                                $imagenes = getImagesByIds([$producto['ID_FOT']]);
+                                                if (!empty($imagenes)) {
+                                                    $imagen = $imagenes[0];
+                                                    $src = 'data:' . $imagen['TIPO_MIME'] . ';base64,' . base64_encode($imagen['FOTO']);
+                                                    
+                                                    if (strpos($imagen['TIPO_MIME'], 'video/') === 0) {
+                                                        echo '<video class="video-thumbnail responsive-media" width="80" height="80" muted loop>';
+                                                        echo '<source src="' . $src . '" type="' . $imagen['TIPO_MIME'] . '">';
+                                                        echo '</video>';
+                                                    } else {
+                                                        echo '<img src="' . $src . '" alt="' . htmlspecialchars($producto['MODELO']) . '"  class="img-preview responsive-media">';
+                                                    }
+                                                }
+                                            ?>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($producto['CATEGORIA']); ?></td>
+                                        <td>Q<?php echo number_format($producto['PRECIO_OFERTA'], 2); ?></td>
+                                        <td><?php echo htmlspecialchars($producto['TALLA_USS']); ?></td>
+                                        <td><?php echo htmlspecialchars($producto['TALLA_CM']); ?></td>
+                                        
+                                    </tr>
+                                </tbody><?php 
+                            }
+                        }
+                    endforeach;                
+                ?>                
             </table>
+            <?php if (!$existenciasP) {?>
+                <p class="no-resultados">No se encontraron productos con los datos solicitados.</p>
+            <?php } ?>
         <?php endif; ?>
     </main>
-
+    
     <main>
         <form class="search-form">
         <h1 >GUIA DE TALLAS EN GUATEMALA</h3>
