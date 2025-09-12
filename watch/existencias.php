@@ -105,78 +105,77 @@ $productos = getAllProductos();
 
     <main>
         <form class="search-form">
-        <h1 >GUIA DE TALLAS EN GUATEMALA</h3>
-        <h3 >(puedes medir con una regla los centimetros de tu pie)</h3>
-        <table class="tabla-disponibles">
+            <h1 >GUIA DE TALLAS EN GUATEMALA</h3>
+            <h3 >(puedes medir con una regla los centimetros de tu pie)</h3>
+            <table class="tabla-disponibles">
                 <thead>
                     <tr>
-                        <th>Numeración en Guatemala</th>
-                        <th>Numeración en USA</th>
-                        <th>Numeración en Centimetros</th>                
+                        <th>Guatemala</th>
+                        <th>Centimetros</th>
+                        <th>Usa</th>                
                     </tr>
                 </thead>
                 <tbody>
                     <tr>                    
                         <td>33</td>
-                        <td>3</td>
-                        <td>22.0</td>                        
+                        <td>22.0</td>  
+                        <td>3</td>                                              
                     </tr>
                     <tr>                    
                         <td>34</td>
-                        <td>4</td>
-                        <td>22.7</td>                        
+                        <td>22.7</td> 
+                        <td>4</td>                                               
                     </tr>
                     <tr>                    
                         <td>35</td>
-                        <td>4.5</td>
-                        <td>23.3</td>                        
+                        <td>23.3</td>
+                        <td>4.5</td>                        
                     </tr>
                     <tr>                    
                         <td>36</td>
-                        <td>5</td>
-                        <td>24.0</td>                        
+                        <td>24.0</td> 
+                        <td>5</td>                       
                     </tr>
                     <tr>                    
                         <td>37</td>
-                        <td>5.5</td>
-                        <td>24.7</td>                        
+                        <td>24.7</td> 
+                        <td>5.5</td>                       
                     </tr>
                     <tr>                    
                         <td>38</td>
-                        <td>6.5</td>
-                        <td>25.3</td>                        
+                        <td>25.3</td>
+                        <td>6.5</td>                        
                     </tr>
                     <tr>                    
                         <td>39</td>
-                        <td>7.0</td>
-                        <td>26.0</td>                        
+                        <td>26.0</td> 
+                        <td>7.0</td>                       
                     </tr>
                     <tr>                    
                         <td>40</td>
-                        <td>7.5</td>
-                        <td>26.7</td>                        
+                        <td>26.7</td> 
+                        <td>7.5</td>                       
                     </tr>
                     <tr>                    
                         <td>41</td>
-                        <td>8.5</td>
-                        <td>27.3</td>                        
+                        <td>27.3</td> 
+                        <td>8.5</td>                       
                     </tr>
                     <tr>                    
                         <td>42</td>
-                        <td>9.0</td>
-                        <td>28.0</td>                        
+                        <td>28.0</td> 
+                        <td>9.0</td>                       
                     </tr>
                     <tr>                    
                         <td>43</td>
-                        <td>10.0</td>
-                        <td>28.7</td>                        
+                        <td>28.7</td> 
+                        <td>10.0</td>                       
                     </tr>
                     <tr>                    
                         <td>44</td>
-                        <td>10.5</td>
-                        <td>29.3</td>                        
-                    </tr>
-                    
+                        <td>29.3</td>
+                        <td>10.5</td>                        
+                    </tr>            
                 </tbody>
             </table>
         </form>
