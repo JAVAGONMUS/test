@@ -67,7 +67,10 @@ function getImagesByIds($ids) {
 // Función para obtener productos con filtros
 function getProductosFiltrados($marca = null, $talla = null) {
     $sql = "SELECT c.*, m.UPC, m.DESCRIPCION, m.PRECIO, 
-                   d.NOMBRE as DIVISION, dep.NOMBRE as DEPARTAMENTO, cat.NOMBRE as CATEGORIA
+                    d.NOMBRE as DIVISION, dep.NOMBRE as DEPARTAMENTO, cat.NOMBRE as CATEGORIA,
+                    d.ID_EMPR AS ID_EMRP_DIV,
+                    dep.ID_EMPR AS ID_EMPR_DEP,
+                    cat.ID_EMPR AS ID_EMPR_CAT
             FROM CATALOGO c
             JOIN MERCADERIA m ON c.ID_PROD = m.ID_PROD
             JOIN DIVISION d ON m.ID_DIV = d.ID_DIV
@@ -97,12 +100,16 @@ function getProductosFiltrados($marca = null, $talla = null) {
 // Función para obtener todos los productos
 function getAllProductos() {
     $sql = "SELECT c.*, m.UPC, m.DESCRIPCION, m.PRECIO, 
-                   d.NOMBRE as DIVISION, dep.NOMBRE as DEPARTAMENTO, cat.NOMBRE as CATEGORIA
+                    d.NOMBRE as DIVISION, dep.NOMBRE as DEPARTAMENTO, cat.NOMBRE as CATEGORIA,
+                    d.ID_EMPR AS ID_EMRP_DIV,
+                    dep.ID_EMPR AS ID_EMPR_DEP,
+                    cat.ID_EMPR AS ID_EMPR_CAT
             FROM CATALOGO c
             JOIN MERCADERIA m ON c.ID_PROD = m.ID_PROD
             JOIN DIVISION d ON m.ID_DIV = d.ID_DIV
             JOIN DEPARTAMENTO dep ON m.ID_DEP = dep.ID_DEP
             JOIN CATEGORIA cat ON m.ID_CAT = cat.ID_CAT
+            WHERE c.VENDIDO = 0
             ORDER BY cat.NOMBRE, c.TALLA_USS";
     
     return executeQuery($sql);
@@ -124,10 +131,10 @@ function getProductoById($id) {
 }
 
 // Función para insertar una nueva imagen
-function insertarImagen($nombre, $contenido, $tipo_mime, $url_video, $user_new_data) {
-    $sql = "INSERT INTO FOTOS (NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
-            VALUES (?, ?, ?, ?, CURDATE(), CURTIME(), ?)";
-    return executeQuery($sql, [$nombre, $contenido, $tipo_mime, $url_video, $user_new_data]);
+function insertarImagen($EMPR, $nombre, $contenido, $tipo_mime, $url_video, $user_new_data) {
+    $sql = "INSERT INTO FOTOS (ID_EMPR, NOMBRE, FOTO, TIPO_MIME, URL_VIDEO, FECHA_ALTA, HORA_ALTA, USER_NEW_DATA) 
+            VALUES (?, ?, ?, ?, ?, CURDATE(), CURTIME(), ?)";
+    return executeQuery($sql, [$EMPR, $nombre, $contenido, $tipo_mime, $url_video, $user_new_data]);
 }
 
 // Función para obtener el próximo ID de FOTOS
